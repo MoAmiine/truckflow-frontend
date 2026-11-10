@@ -1,16 +1,38 @@
-# React + Vite
+# FleetTrackPRO — Frontend React (Sprint 3)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interface web React (Vite) de gestion de flotte pour l'entreprise de transport .
+Supporte deux rôles distincts : **Administrateur** et **Chauffeur**.
 
-Currently, two official plugins are available:
+## 🛠️ Lancement du projet
+```bash
+# Installation des dépendances
+npm install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# Démarrage du serveur de développement (Port 5173)
+npm run dev
 
-## React Compiler
+# Build de production
+npm run build
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🌐 Configuration API & CORS
+* **Base URL :** `http://localhost:5001/api/v1`
+* **CORS :** Autorise `http://localhost:5173` avec en-têtes `Authorization` et `credentials: true`.
 
-## Expanding the Oxlint configuration
+## 📑 Fiche de Contrat Backend
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+| Point à relever | Information documentée |
+| :--- | :--- |
+| **Connexion (US01)** | `POST /api/v1/auth/login` <br> Body: `{ "email": "...", "password": "..." }` <br> Réponse: `{ status: "success", data: { id, nom, prenom, email, role, statut, accessToken, refreshToken } }` |
+| **Session & Rafraîchissement** | Header `Authorization: Bearer <accessToken>` <br> Rafraîchissement: `POST /api/v1/auth/refresh` `{ refreshToken }` |
+| **Identité & Rôle** | Champ `role` (`"admin"` \| `"chauffeur"`) renvoyé à la connexion et via `GET /api/v1/auth/me` |
+| **Déconnexion (US08)** | `POST /api/v1/auth/logout` (Header Bearer), effacement mémoire de la session |
+| **Utilisateurs (US02/03/04)** | `GET /api/v1/users` (Liste complète) <br> `POST /api/v1/users/chauffeurs` (Créer chauffeur) <br> `PATCH /api/v1/users/:id/statut` (Suspendre/Activer) |
+| **Camions (US05)** | `GET /api/v1/camions` (Liste) <br> `POST /api/v1/camions` (Créer) <br> `PUT /api/v1/camions/:id` (Éditer) <br> `DELETE /api/v1/camions/:id` (Archiver) |
+| **Mes Trajets (US06)** | `GET /api/v1/trajets/mes-trajets` (Trajets assignés au chauffeur connecté) |
+| **Format Erreurs (US07)** | `{ "status": "fail", "statusCode": 4xx, "message": "..." }` <br> `401` = Session expirée / Identifiants invalides <br> `403` = Accès refusé / Chauffeur suspendu |
+
+## 👥 Comptes de Vérification
+* **Admin :** `admin@truckflow.com` / `admin123456`
+* **Chauffeur Actif :** `chauffeur@truckflow.com` / `chauffeur123456`
+* **Chauffeur Suspendu :** `suspendu@truckflow.com` / `chauffeur123456`
