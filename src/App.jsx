@@ -3,6 +3,7 @@ import { useState } from 'react';
 import LoginForm from './components/LoginForm';
 import { apiRequest } from './services/api';
 import ProtectedView from './components/ProtectedView';
+import DriverLayout from './components/DriverLayout';
 
 function App() {
   const [session, setSession] = useState(null);
@@ -52,7 +53,7 @@ function App() {
           <ProtectedView session={session} allowedRoles={['chauffeur']}>
             <section className="driver-view">
               <h3>🚚 Espace Chauffeur</h3>
-              <p>Bienvenue. Consultez vos trajets assignés et missions.</p>
+              <DriverLayout session={session}/>
             </section>
           </ProtectedView>
         </div>
