@@ -4,6 +4,8 @@ import LoginForm from './components/LoginForm';
 import { apiRequest } from './services/api';
 import ProtectedView from './components/ProtectedView';
 import DriverLayout from './components/DriverLayout';
+import UserList from './components/UserList';
+
 
 function App() {
   const [session, setSession] = useState(null);
@@ -47,12 +49,13 @@ function App() {
             <section className="admin-view">
               <h3>🛠️ Espace Administration Flotte</h3>
               <p>Bienvenue Admin. Vous avez le contrôle total sur la flotte.</p>
+              <UserList session={session} />
             </section>
           </ProtectedView>
 
           <ProtectedView session={session} allowedRoles={['chauffeur']}>
             <section className="driver-view">
-              <h3>🚚 Espace Chauffeur</h3>
+              <h3>Espace Chauffeur</h3>
               <DriverLayout session={session}/>
             </section>
           </ProtectedView>
