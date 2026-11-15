@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { apiRequest } from '../services/api';
 import UserCard from './UserCard';
+import UserForm from './UserForm';
 
 function UserList({ session }) {
   const [users, setUsers] = useState([]);
@@ -27,6 +28,31 @@ function UserList({ session }) {
     }
   };
 
+  const handleUserCreated = (newUser) => {
+    setUsers((prev) => [newUser, ...prev]);
+  };
+
+  const handleToggleStatut = async (user) => {
+    const newStatut = user.statut === 'actif' ? 'suspendu' : 'actif';
+    try {
+      await apiRequest(`/users/${user._id || user.id}/statut`, {
+        method: 'PATCH',
+        token: session.accessToken,
+        body: JSON.stringify({ statut: newStatut })
+      });
+
+      setUsers((prev) =>
+        prev.map((u) => ((u._id || u.id) === (user._id || user.id) ? { ...u, statut: newStatut } : u))
+      );
+
+      setSelectedUser((prev) =>
+        prev && (prev._id || prev.id) === (user._id || user.id) ? { ...prev, statut: newStatut } : prev
+      );
+    } catch (err) {
+      alert(`Erreur lors du changement de statut: ${err.message}`);
+    }
+  };
+
   const filteredUsers = users.filter((u) => {
     const matchRole = roleFilter === 'Tous' || u.role === roleFilter;
     const matchStatus = statusFilter === 'Tous' || u.statut === statusFilter;
@@ -35,6 +61,8 @@ function UserList({ session }) {
 
   return (
     <div className="user-management">
+      <UserForm session={session} onUserCreated={handleUserCreated} />
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h3>👥 Gestion des Utilisateurs ({filteredUsers.length})</h3>
         <button onClick={handleLoadUsers} disabled={isLoading}>
@@ -90,6 +118,24 @@ function UserList({ session }) {
               <p><strong>Rôle :</strong> {selectedUser.role}</p>
               <p><strong>Statut :</strong> {selectedUser.statut}</p>
               <p><strong>Identifiant :</strong> <code>{selectedUser._id || selectedUser.id}</code></p>
+
+              {selectedUser.role === 'chauffeur' && (
+                <div style={{ marginTop: '16px' }}>
+                  <button
+                    onClick={() => handleToggleStatut(selectedUser)}
+                    style={{
+                      background: selectedUser.statut === 'actif' ? '#dc3545' : '#28a745',
+                      color: '#fff',
+                      border: 'none',
+                      padding: '8px 14px',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {selectedUser.statut === 'actif' ? '🚫 Suspendre le Chauffeur' : '✅ Réactiver le Chauffeur'}
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <p style={{ color: '#888' }}>Cliquez sur un utilisateur à gauche pour afficher ses détails.</p>
