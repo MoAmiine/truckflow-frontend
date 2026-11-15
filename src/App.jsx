@@ -31,18 +31,18 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>FleetTrackPRO — Gestion de Flotte</h1>
+      <h1 className="app-title">🚛 FleetTrackPRO — Gestion de Flotte</h1>
 
       {!session ? (
         <LoginForm onlogin={handleLogin} />
       ) : (
         <div className="main-layout">
           <header className="app-header">
-            <div>
-              Connecté: <strong>{session.prenom} {session.nom}</strong>
-              <span className="badge-role"> ({session.role})</span>
+            <div className="user-session-info">
+              <span>Connecté : <strong>{session.prenom} {session.nom}</strong></span>
+              <span className={`badge-role ${session.role}`}>{session.role}</span>
             </div>
-            <button onClick={handleLogout}>Se déconnecter</button>
+            <button className="btn-logout" onClick={handleLogout}>Se déconnecter</button>
           </header>
 
           <ProtectedView session={session} allowedRoles={['admin']}>
