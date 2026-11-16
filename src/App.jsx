@@ -5,6 +5,7 @@ import { apiRequest } from './services/api';
 import ProtectedView from './components/ProtectedView';
 import DriverLayout from './components/DriverLayout';
 import UserList from './components/UserList';
+import TruckList from './components/TruckList';
 
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1 className="app-title">🚛 FleetTrackPRO — Gestion de Flotte</h1>
+      <h1 className="app-title">FleetTrackPRO — Gestion de Flotte</h1>
 
       {!session ? (
         <LoginForm onlogin={handleLogin} />
@@ -47,9 +48,10 @@ function App() {
 
           <ProtectedView session={session} allowedRoles={['admin']}>
             <section className="admin-view">
-              <h3>🛠️ Espace Administration Flotte</h3>
+              <h3>Espace Administration Flotte</h3>
               <p>Bienvenue Admin. Vous avez le contrôle total sur la flotte.</p>
               <UserList session={session} />
+              <TruckList session={session} />
             </section>
           </ProtectedView>
 

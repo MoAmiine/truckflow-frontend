@@ -46,7 +46,7 @@ function UserForm({ session, onUserCreated }) {
 
   return (
     <div style={{ border: '1px solid #ddd', padding: '16px', borderRadius: '8px', background: '#fdfdfd', marginBottom: '20px' }}>
-      <h4>➕ Ajouter un Nouveau Chauffeur</h4>
+      <h4>Ajouter un Nouveau Chauffeur</h4>
 
       {error && <p style={{ color: 'red', margin: '8px 0' }}>{error}</p>}
       {successMsg && <p style={{ color: 'green', margin: '8px 0' }}>{successMsg}</p>}

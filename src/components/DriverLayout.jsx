@@ -26,7 +26,7 @@ function DriverLayout({ session }) {
 
         <div className="driver-layout">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <h3>🚚 Espace Chauffeur — Mes Missions</h3>
+                <h3>Espace Chauffeur — Mes Missions</h3>
                 <button className="btn-primary" style={{ width: 'auto' }} onClick={handleLoadTrajet} disabled={isLoading}>
                     {isLoading ? 'Chargement...' : 'Consulter mes trajets'}
                 </button>
@@ -40,7 +40,7 @@ function DriverLayout({ session }) {
                     {trajet.map((t) => (
                         <li key={t._id} className="trajet-card">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <h4 style={{ fontSize: '1.1rem' }}>{t.lieuDepart} ➔ {t.destination}</h4>
+                                <h4 style={{ fontSize: '1.1rem' }}>{t.lieuDepart} - {t.destination}</h4>
                                 <span className={`status-badge ${t.statut}`}>{t.statut}</span>
                             </div>
                             <p style={{ margin: '6px 0', color: '#475569' }}>

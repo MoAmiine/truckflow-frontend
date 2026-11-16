@@ -64,7 +64,7 @@ function UserList({ session }) {
       <UserForm session={session} onUserCreated={handleUserCreated} />
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <h3>👥 Gestion des Utilisateurs ({filteredUsers.length})</h3>
+        <h3>Gestion des Utilisateurs ({filteredUsers.length})</h3>
         <button onClick={handleLoadUsers} disabled={isLoading}>
           {isLoading ? 'Chargement...' : 'Charger / Actualiser'}
         </button>
@@ -109,7 +109,7 @@ function UserList({ session }) {
         </div>
 
         <div style={{ border: '1px solid #ddd', padding: '16px', borderRadius: '8px', background: '#fff', height: 'fit-content' }}>
-          <h4>📄 Détails de l'utilisateur</h4>
+          <h4>Détails de l'utilisateur</h4>
           {selectedUser ? (
             <div>
               <p><strong>Nom complet :</strong> {selectedUser.prenom} {selectedUser.nom}</p>
@@ -132,7 +132,7 @@ function UserList({ session }) {
                       cursor: 'pointer'
                     }}
                   >
-                    {selectedUser.statut === 'actif' ? '🚫 Suspendre le Chauffeur' : '✅ Réactiver le Chauffeur'}
+                    {selectedUser.statut === 'actif' ? 'Suspendre le Chauffeur' : 'Réactiver le Chauffeur'}
                   </button>
                 </div>
               )}
