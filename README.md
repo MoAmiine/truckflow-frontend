@@ -3,7 +3,7 @@
 Interface web React (Vite) de gestion de flotte pour l'entreprise de transport .
 Supporte deux rôles distincts : **Administrateur** et **Chauffeur**.
 
-## 🛠️ Lancement du projet
+## Lancement du projet
 ```bash
 # Installation des dépendances
 npm install
@@ -15,11 +15,11 @@ npm run dev
 npm run build
 ```
 
-## 🌐 Configuration API & CORS
+## Configuration API & CORS
 * **Base URL :** `http://localhost:5001/api/v1`
 * **CORS :** Autorise `http://localhost:5173` avec en-têtes `Authorization` et `credentials: true`.
 
-## 📑 Fiche de Contrat Backend
+## Fiche de Contrat Backend
 
 | Point à relever | Information documentée |
 | :--- | :--- |
@@ -32,7 +32,7 @@ npm run build
 | **Mes Trajets (US06)** | `GET /api/v1/trajets/mes-trajets` (Trajets assignés au chauffeur connecté) |
 | **Format Erreurs (US07)** | `{ "status": "fail", "statusCode": 4xx, "message": "..." }` <br> `401` = Session expirée / Identifiants invalides <br> `403` = Accès refusé / Chauffeur suspendu |
 
-## 👥 Comptes de Vérification
+## Comptes de Vérification
 * **Admin :** `admin@truckflow.com` / `admin123456`
 * **Chauffeur Actif :** `chauffeur@truckflow.com` / `chauffeur123456`
 * **Chauffeur Suspendu :** `suspendu@truckflow.com` / `chauffeur123456`
