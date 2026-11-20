@@ -1,60 +1,25 @@
-import { useState } from "react";
-import { apiRequest } from "../services/api";
+import { NavLink, Outlet } from 'react-router-dom';
 
-
-function DriverLayout({ session }) {
-    const [trajet, setTrajet] = useState([])
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null)
-    const [hasLoaded, setHasLoaded] = useState(false)
-
-    const handleLoadTrajet = async () => {
-        setIsLoading(true)
-        setError(null)
-        try {
-            const result = await apiRequest('/trajets/mes-trajets', { token: session.accessToken });
-            setTrajet(result.data)
-            setHasLoaded(true)
-        } catch (error) {
-            setError(error.message)
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    return (
-
-        <div className="driver-layout">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <h3>Espace Chauffeur — Mes Missions</h3>
-                <button className="btn-primary" style={{ width: 'auto' }} onClick={handleLoadTrajet} disabled={isLoading}>
-                    {isLoading ? 'Chargement...' : 'Consulter mes trajets'}
-                </button>
-            </div>
-            {error && <p className="error-text">{error}</p>}
-            {hasLoaded && !isLoading && trajet.length === 0 && (
-                <p style={{ color: '#64748b', fontStyle: 'italic', margin: '20px 0' }}>Aucun trajet ne vous a été assigné pour le moment.</p>
-            )}
-            {trajet.length > 0 && (
-                <ul className="trajet-list">
-                    {trajet.map((t) => (
-                        <li key={t._id} className="trajet-card">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <h4 style={{ fontSize: '1.1rem' }}>{t.lieuDepart} - {t.destination}</h4>
-                                <span className={`status-badge ${t.statut}`}>{t.statut}</span>
-                            </div>
-                            <p style={{ margin: '6px 0', color: '#475569' }}>
-                                <strong>Camion :</strong> {t.camionId?.immatriculation || 'Non assigné'} {t.camionId?.marque ? `(${t.camionId.marque})` : ''}
-                            </p>
-                            <p style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                                <strong>Date départ :</strong> {t.dateDepartPrevue ? new Date(t.dateDepartPrevue).toLocaleDateString() : 'Non définie'}
-                            </p>
-                        </li>
-                    ))}
-                </ul>
-            )}
+export default function DriverLayout({ session, onLogout }) {
+  return (
+    <div className="driver-layout-container">
+      <header className="app-header">
+        <div className="user-session-info">
+          <span>Connecté : <strong>{session?.prenom} {session?.nom}</strong></span>
+          <span className={`badge-role ${session?.role}`}>{session?.role}</span>
         </div>
-    );
-}
+        <button className="btn-logout" onClick={onLogout}>Se déconnecter</button>
+      </header>
 
-export default DriverLayout;
+      <nav className="driver-nav" style={{ display: 'flex', gap: '10px', background: '#fff', padding: '12px 16px', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
+        <NavLink to="/chauffeur/trajets" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+          Mes Trajets
+        </NavLink>
+      </nav>
+
+      <main className="driver-main-content">
+        <Outlet />
+      </main>
+    </div>
+  );
+}

@@ -1,12 +1,17 @@
 import './App.css';
 import { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import { apiRequest } from './services/api';
-import ProtectedView from './components/ProtectedView';
+import AdminLayout from './components/AdminLayout';
 import DriverLayout from './components/DriverLayout';
+import DriverTrajets from './components/DriverTrajets';
 import UserList from './components/UserList';
 import TruckList from './components/TruckList';
-
+import RequireAuth from './components/RequireAuth';
+import RequireRole from './components/RequireRole';
+import Forbidden from './components/Forbidden';
+import NotFound from './components/NotFound';
 
 function App() {
   const [session, setSession] = useState(null);
@@ -34,35 +39,57 @@ function App() {
     <div className="app-container">
       <h1 className="app-title">FleetTrackPRO — Gestion de Flotte</h1>
 
-      {!session ? (
-        <LoginForm onlogin={handleLogin} />
-      ) : (
-        <div className="main-layout">
-          <header className="app-header">
-            <div className="user-session-info">
-              <span>Connecté : <strong>{session.prenom} {session.nom}</strong></span>
-              <span className={`badge-role ${session.role}`}>{session.role}</span>
-            </div>
-            <button className="btn-logout" onClick={handleLogout}>Se déconnecter</button>
-          </header>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            !session ? (
+              <Navigate to="/login" replace />
+            ) : session.role === 'admin' ? (
+              <Navigate to="/admin/camions" replace />
+            ) : (
+              <Navigate to="/chauffeur/trajets" replace />
+            )
+          }
+        />
 
-          <ProtectedView session={session} allowedRoles={['admin']}>
-            <section className="admin-view">
-              <h3>Espace Administration Flotte</h3>
-              <p>Bienvenue Admin. Vous avez le contrôle total sur la flotte.</p>
-              <UserList session={session} />
-              <TruckList session={session} />
-            </section>
-          </ProtectedView>
+        <Route path="/login" element={<LoginForm onlogin={handleLogin} />} />
 
-          <ProtectedView session={session} allowedRoles={['chauffeur']}>
-            <section className="driver-view">
-              <h3>Espace Chauffeur</h3>
-              <DriverLayout session={session}/>
-            </section>
-          </ProtectedView>
-        </div>
-      )}
+        <Route
+          path="/admin"
+          element={
+            <RequireAuth session={session}>
+              <RequireRole session={session} allowedRoles={['admin']}>
+                <AdminLayout session={session} onLogout={handleLogout} />
+              </RequireRole>
+            </RequireAuth>
+          }
+        >
+          <Route index element={<Navigate to="/admin/camions" replace />} />
+          <Route path="camions" element={<TruckList session={session} />} />
+          <Route path="utilisateurs" element={<UserList session={session} />} />
+          <Route path="remorques" element={<div className="user-management"><h3>Module Remorques (En cours de création)</h3></div>} />
+          <Route path="trajets" element={<div className="user-management"><h3>Module Trajets (En cours de création)</h3></div>} />
+        </Route>
+
+        <Route
+          path="/chauffeur"
+          element={
+            <RequireAuth session={session}>
+              <RequireRole session={session} allowedRoles={['chauffeur']}>
+                <DriverLayout session={session} onLogout={handleLogout} />
+              </RequireRole>
+            </RequireAuth>
+          }
+        >
+          <Route index element={<Navigate to="/chauffeur/trajets" replace />} />
+          <Route path="trajets" element={<DriverTrajets session={session} />} />
+        </Route>
+
+        <Route path="/403" element={<Forbidden session={session} />} />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 }

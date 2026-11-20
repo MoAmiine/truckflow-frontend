@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { apiRequest } from "../services/api";
 
 function LoginForm({ onlogin }) {
@@ -6,6 +7,9 @@ function LoginForm({ onlogin }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,12 +20,28 @@ function LoginForm({ onlogin }) {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await apiRequest('/auth/login', {
+      const result = await apiRequest('/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password })
       });
+
+      const userData = result.data;
       if (onlogin) {
-        onlogin(data);
+        onlogin(result);
+      }
+
+      const requestedPath = location.state?.from?.pathname;
+      const isAdminRoute = requestedPath?.startsWith('/admin');
+      const isDriverRoute = requestedPath?.startsWith('/chauffeur');
+
+      if (userData.role === 'admin') {
+        const target = (!requestedPath || requestedPath === '/login' || isDriverRoute) ? '/admin/camions' : requestedPath;
+        navigate(target, { replace: true });
+      } else if (userData.role === 'chauffeur') {
+        const target = (!requestedPath || requestedPath === '/login' || isAdminRoute) ? '/chauffeur/trajets' : requestedPath;
+        navigate(target, { replace: true });
+      } else {
+        navigate('/', { replace: true });
       }
     } catch (err) {
       setError(err.message);
