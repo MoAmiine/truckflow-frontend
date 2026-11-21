@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { apiRequest } from '../services/api';
 import TruckCard from './TruckCard';
 import TruckForm from './TruckForm';
@@ -27,6 +27,9 @@ function TruckList({ session }) {
     }
   };
 
+  useEffect(() => {
+    handleLoadTrucks();
+  }, [])
   const handleSavedTruck = (saved, isEditing) => {
     if (isEditing) {
       setTrucks((prev) =>

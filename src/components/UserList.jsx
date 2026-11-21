@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { apiRequest } from '../services/api';
 import UserCard from './UserCard';
 import UserForm from './UserForm';
@@ -27,6 +27,10 @@ function UserList({ session }) {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    handleLoadUsers();
+  }, [])
 
   const handleUserCreated = (newUser) => {
     setUsers((prev) => [newUser, ...prev]);
