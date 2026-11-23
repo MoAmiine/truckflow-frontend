@@ -8,6 +8,9 @@ import DriverLayout from './components/DriverLayout';
 import DriverTrajets from './components/DriverTrajets';
 import UserList from './components/UserList';
 import TruckList from './components/TruckList';
+import RemorqueList from './components/RemorqueList';
+import RemorqueForm from './components/RemorqueForm';
+import RemorqueDetail from './components/RemorqueDetail';
 import RequireAuth from './components/RequireAuth';
 import RequireRole from './components/RequireRole';
 import Forbidden from './components/Forbidden';
@@ -68,7 +71,9 @@ function App() {
           <Route index element={<Navigate to="/admin/camions" replace />} />
           <Route path="camions" element={<TruckList session={session} />} />
           <Route path="utilisateurs" element={<UserList session={session} />} />
-          <Route path="remorques" element={<div className="user-management"><h3>Module Remorques (En cours de création)</h3></div>} />
+          <Route path="remorques" element={<RemorqueList session={session} />} />
+          <Route path="remorques/nouveau" element={<RemorqueForm session={session} />} />
+          <Route path="remorques/:id" element={<RemorqueDetail session={session} />} />
           <Route path="trajets" element={<div className="user-management"><h3>Module Trajets (En cours de création)</h3></div>} />
         </Route>
 
