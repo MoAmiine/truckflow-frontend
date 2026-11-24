@@ -15,6 +15,9 @@ import RequireAuth from './components/RequireAuth';
 import RequireRole from './components/RequireRole';
 import Forbidden from './components/Forbidden';
 import NotFound from './components/NotFound';
+import TrajetList from './components/TrajetList';
+
+
 
 function App() {
   const [session, setSession] = useState(null);
@@ -74,7 +77,7 @@ function App() {
           <Route path="remorques" element={<RemorqueList session={session} />} />
           <Route path="remorques/nouveau" element={<RemorqueForm session={session} />} />
           <Route path="remorques/:id" element={<RemorqueDetail session={session} />} />
-          <Route path="trajets" element={<div className="user-management"><h3>Module Trajets (En cours de création)</h3></div>} />
+          <Route path="trajets" element={<TrajetList session={session}/>} />
         </Route>
 
         <Route
