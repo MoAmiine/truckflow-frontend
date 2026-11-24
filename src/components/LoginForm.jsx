@@ -53,7 +53,7 @@ function LoginForm({ onlogin }) {
   return (
     <div className="login-card">
       <h2>Connexion</h2>
-      <p className="subtitle">Accédez à votre espace FleetTrackPRO</p>
+      <p className="subtitle">Accédez à votre espace TruckFlow</p>
 
       {error && <p className="error-text">{error}</p>}
 

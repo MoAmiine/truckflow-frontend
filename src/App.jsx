@@ -45,7 +45,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1 className="app-title">FleetTrackPRO — Gestion de Flotte</h1>
+      <h1 className="app-title">TruckFlow — Gestion de Flotte</h1>
 
       <Routes>
         <Route

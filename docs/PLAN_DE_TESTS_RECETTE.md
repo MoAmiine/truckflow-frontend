@@ -1,6 +1,6 @@
 # Plan de Tests Manuels, Accessibilité & Recette Finale (US-F09 / TF-41)
 
-Ce document formalise la recette fonctionnelle, technique et ergonomique de l'application **FleetTrackPRO** pour la soutenance finale.
+Ce document formalise la recette fonctionnelle, technique et ergonomique de l'application **TruckFlow** pour la soutenance finale.
 
 ---
 
