@@ -16,6 +16,8 @@ import RequireRole from './components/RequireRole';
 import Forbidden from './components/Forbidden';
 import NotFound from './components/NotFound';
 import TrajetList from './components/TrajetList';
+import TrajetForm from './components/TrajetForm';
+import TrajetDetail from './components/TrajetDetail';
 
 
 
@@ -78,6 +80,8 @@ function App() {
           <Route path="remorques/nouveau" element={<RemorqueForm session={session} />} />
           <Route path="remorques/:id" element={<RemorqueDetail session={session} />} />
           <Route path="trajets" element={<TrajetList session={session}/>} />
+          <Route path="trajets/nouveau" element={<TrajetForm session={session} />} />
+          <Route path="trajets/:id" element={<TrajetDetail session={session}/>}/>
         </Route>
 
         <Route
