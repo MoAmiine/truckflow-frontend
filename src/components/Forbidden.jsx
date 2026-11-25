@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-export default function Forbidden({ session }) {
+export default function Forbidden() {
+  const { session } = useAuth();
   const homePath = session?.role === 'admin' ? '/admin/camions' : session?.role === 'chauffeur' ? '/chauffeur/trajets' : '/login';
 
   return (

@@ -2,7 +2,6 @@ import './App.css';
 import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
-import { apiRequest } from './services/api';
 import AdminLayout from './components/AdminLayout';
 import DriverLayout from './components/DriverLayout';
 import DriverTrajets from './components/DriverTrajets';
@@ -19,30 +18,13 @@ import TrajetList from './components/TrajetList';
 import TrajetForm from './components/TrajetForm';
 import TrajetDetail from './components/TrajetDetail';
 import DriverTrajet from './components/DriverTrajetDetail';
+import { useAuth } from './context/AuthContext';
 
 
 
 function App() {
-  const [session, setSession] = useState(null);
 
-  const handleLogin = (result) => {
-    setSession(result.data);
-  };
-
-  const handleLogout = async () => {
-    try {
-      if (session?.accessToken) {
-        await apiRequest('/auth/logout', {
-          method: 'POST',
-          token: session.accessToken
-        });
-      }
-    } catch (err) {
-      console.error('Erreur lors du logout:', err.message);
-    } finally {
-      setSession(null);
-    }
-  };
+  const { session, login, logout } = useAuth();
 
   return (
     <div className="app-container">
@@ -62,14 +44,14 @@ function App() {
           }
         />
 
-        <Route path="/login" element={<LoginForm onlogin={handleLogin} />} />
+        <Route path="/login" element={<LoginForm onlogin={login} />} />
 
         <Route
           path="/admin"
           element={
-            <RequireAuth session={session}>
-              <RequireRole session={session} allowedRoles={['admin']}>
-                <AdminLayout session={session} onLogout={handleLogout} />
+            <RequireAuth>
+              <RequireRole allowedRoles={['admin']}>
+                <AdminLayout />
               </RequireRole>
             </RequireAuth>
           }
@@ -80,18 +62,18 @@ function App() {
           <Route path="remorques" element={<RemorqueList session={session} />} />
           <Route path="remorques/nouveau" element={<RemorqueForm session={session} />} />
           <Route path="remorques/:id" element={<RemorqueDetail session={session} />} />
-          <Route path="trajets" element={<TrajetList session={session}/>} />
+          <Route path="trajets" element={<TrajetList session={session} />} />
           <Route path="trajets/nouveau" element={<TrajetForm session={session} />} />
-          <Route path="trajets/:id" element={<TrajetDetail session={session}/>}/>
-          
+          <Route path="trajets/:id" element={<TrajetDetail session={session} />} />
+
         </Route>
 
         <Route
           path="/chauffeur"
           element={
-            <RequireAuth session={session}>
-              <RequireRole session={session} allowedRoles={['chauffeur']}>
-                <DriverLayout session={session} onLogout={handleLogout} />
+            <RequireAuth>
+              <RequireRole allowedRoles={['chauffeur']}>
+                <DriverLayout />
               </RequireRole>
             </RequireAuth>
           }
@@ -101,7 +83,7 @@ function App() {
           <Route path="trajets/:id" element={<DriverTrajet session={session} />} />
         </Route>
 
-        <Route path="/403" element={<Forbidden session={session} />} />
+        <Route path="/403" element={<Forbidden />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
