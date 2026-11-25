@@ -18,6 +18,7 @@ import NotFound from './components/NotFound';
 import TrajetList from './components/TrajetList';
 import TrajetForm from './components/TrajetForm';
 import TrajetDetail from './components/TrajetDetail';
+import DriverTrajet from './components/DriverTrajetDetail';
 
 
 
@@ -82,6 +83,7 @@ function App() {
           <Route path="trajets" element={<TrajetList session={session}/>} />
           <Route path="trajets/nouveau" element={<TrajetForm session={session} />} />
           <Route path="trajets/:id" element={<TrajetDetail session={session}/>}/>
+          
         </Route>
 
         <Route
@@ -96,6 +98,7 @@ function App() {
         >
           <Route index element={<Navigate to="/chauffeur/trajets" replace />} />
           <Route path="trajets" element={<DriverTrajets session={session} />} />
+          <Route path="trajets/:id" element={<DriverTrajet session={session} />} />
         </Route>
 
         <Route path="/403" element={<Forbidden session={session} />} />
